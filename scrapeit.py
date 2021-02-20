@@ -5,6 +5,9 @@ import pyperclip
 import bs4
 import re
 import os, sys, errno
+
+print(sys.path[0])
+print(sys.argv)
 os.chdir(sys.path[0])
 
 
@@ -56,9 +59,13 @@ def write_text(soup, page_url, counter=None):
     f.close()
 
 
-def process_urls_from_txt(txt_filepath):
+def process_urls_from_txt(txt_file):
+    # txt_file is .txt with urls separated by line
+    create_folder()
+    url_file = open(txt_file,'r')
+
     n = 1
-    for url in txt_filepath.readlines():
+    for url in url_file.readlines():
         if url[-1:] == '\n':
             url = url[:-1] # need to drop '\n' at end of url
         
@@ -70,37 +77,35 @@ def process_urls_from_txt(txt_filepath):
 
 
 def process_url():
-    create_folder()
     new_soup = make_soup(url)
     write_text(new_soup, url)
 
-
 #################################################################
+
 
 if len(sys.argv) > 1:
 
-    if sys.argv[1] == 'file': # [scrapeit.py, 'file', filepath.txt]
-        process_urls_from_txt(sys.argv[2])        
+    if sys.argv[1] == 'file': # [scrapeit.py, file, filepath.txt]
+        in_file = 'input\\' + sys.argv[2]
+        keyword = sys.argv[2][:-4]
+        folder = 'ouput\\' + keyword + '\\'
+        process_urls_from_txt(in_file)
 
-    elif 'http' in sys.argv[1]: # [scrapeit.py, http://... or https://...]
-        url = sys.argv[1:]
-        folder = 'scrapeit text\\'
-        process_url()
+    # elif 'http' in sys.argv[1]: # [scrapeit.py, http://... or https://...]
+    #     url = sys.argv[1:]
+    #     folder = 'scrapeit text\\'
+    #     create_folder()
+    #     process_url()
 
 else:
     # try:
-    url = pyperclip.paste()
-    folder = 'scrapeit text\\'
-    process_url()
-    
-    # except:
-    #     print("no URL supplied. Your probably didn't have one on the clipboard.")
+    if 'http' in pyperclip.paste():
+        url = pyperclip.paste()
+        folder = 'scrapeit text\\'
+        create_folder()
+        process_url()
 
-# create_folder()
-# new_soup = make_soup(url)
-# write_text(new_soup, url)
-# url_file = open(url_filename,'r')
-
-        # need to drop the '\\n' at the end of each line, hence [:-1]
+    else:
+        print("no input url given. either copy address to clipboard or append 'file filename.txt' to run command")
 
 print("bye")
