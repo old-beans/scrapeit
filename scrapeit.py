@@ -39,7 +39,7 @@ def write_text(soup, page_url, counter=None):
         filename = folder + str(counter) + '_scrape.txt'
 
     else:
-        folder + soup.title.text.strip() + '_scrape.txt'
+        filename = folder + soup.title.text.strip() + '_scrape.txt'
 
     with open(filename, 'w') as f:
         f.write(page_url + '\n')
@@ -48,7 +48,7 @@ def write_text(soup, page_url, counter=None):
         for string in soup.stripped_strings:
             
             try:
-                f.write(string.lower())
+                f.write(string.lower() + '   ')
             except UnicodeEncodeError:
                 print(page_url + "\nUnicode Error - foreign language detected")
                 # In case of different language
@@ -77,23 +77,28 @@ def process_url():
 
 #################################################################
 
-if len(sys.argv) > 2:
+if len(sys.argv) > 1:
 
     if sys.argv[1] == 'file': # [scrapeit.py, 'file', filepath.txt]
-        process_url_txt(sys.argv[2])        
+        process_urls_from_txt(sys.argv[2])        
 
-elif 'http' in sys.argv[1]: # [scrapeit.py, http://... or https://...]
-    url = sys.argv[1:]
-    folder = 'scrapeit text\\'
+    elif 'http' in sys.argv[1]: # [scrapeit.py, http://... or https://...]
+        url = sys.argv[1:]
+        folder = 'scrapeit text\\'
+        process_url()
 
 else:
+    # try:
     url = pyperclip.paste()
     folder = 'scrapeit text\\'
+    process_url()
+    
+    # except:
+    #     print("no URL supplied. Your probably didn't have one on the clipboard.")
 
-
-create_folder()
-new_soup = make_soup(url)
-write_text(new_soup, url)
+# create_folder()
+# new_soup = make_soup(url)
+# write_text(new_soup, url)
 # url_file = open(url_filename,'r')
 
         # need to drop the '\\n' at the end of each line, hence [:-1]
