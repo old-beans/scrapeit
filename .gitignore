@@ -3,6 +3,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
 \scrapeit text
+\input
+\output
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
