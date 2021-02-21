@@ -2,9 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
-\scrapeit text
-\input
-\output
+input/
+output/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

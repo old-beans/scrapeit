@@ -1,0 +1,2 @@
+@python scrapeit.py %*
+@pause
